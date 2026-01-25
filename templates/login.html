@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Local Login Test</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  </head>
+  <body>
+    <main class="card">
+      <h1>Local Login Test</h1>
+      <p>Enter any username and password to store a record locally.</p>
+      {% if error %}
+        <div class="alert" role="alert">{{ error }}</div>
+      {% endif %}
+      <form method="post" class="form">
+        <label class="field">
+          <span>Username</span>
+          <input type="text" name="username" placeholder="jane.doe" required />
+        </label>
+        <label class="field">
+          <span>Password</span>
+          <input type="password" name="password" placeholder="••••••" required />
+        </label>
+        <button type="submit">Save Login</button>
+      </form>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Saved</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  </head>
+  <body>
+    <main class="card">
+      <h1>Saved!</h1>
+      <p>The login for <strong>{{ username }}</strong> was stored in the local database.</p>
+      <a class="link" href="{{ url_for('login') }}">Back to login</a>
+    </main>
+  </body>
+</html>

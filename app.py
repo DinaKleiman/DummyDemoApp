@@ -1,0 +1,59 @@
+from __future__ import annotations
+
+import sqlite3
+from pathlib import Path
+
+from flask import Flask, redirect, render_template, request, url_for
+
+def init_db() -> None:
+    DB_PATH.parent.mkdir(parents=True, exist_ok=True)
+    with sqlite3.connect(DB_PATH) as connection:
+        connection.execute(
+            """
+            CREATE TABLE IF NOT EXISTS logins (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                username TEXT NOT NULL,
+                password TEXT NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+            """
+        )
+        connection.commit()
+
+
+BASE_DIR = Path(__file__).resolve().parent
+DB_PATH = BASE_DIR / "data" / "app.db"
+
+app = Flask(__name__)
+init_db()
+
+
+@app.route("/", methods=["GET", "POST"])
+def login() -> str:
+    if request.method == "POST":
+        username = request.form.get("username", "").strip()
+        password = request.form.get("password", "").strip()
+        if username and password:
+            with sqlite3.connect(DB_PATH) as connection:
+                connection.execute(
+                    "INSERT INTO logins (username, password) VALUES (?, ?)",
+                    (username, password),
+                )
+                connection.commit()
+            return redirect(url_for("success", username=username))
+        return render_template(
+            "login.html",
+            error="Please enter both a username and password.",
+        )
+
+    return render_template("login.html")
+
+
+@app.route("/success")
+def success() -> str:
+    username = request.args.get("username", "")
+    return render_template("success.html", username=username)
+
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000, debug=True)

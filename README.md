@@ -20,10 +20,12 @@ Simple local login demo with a Flask backend and a minimal HTML/CSS UI. Submitte
    ```
 
 4. Install dependencies:
+Note:   You usually only need to do this once per virtual environment, or whenever `requirements.txt` changes.
 
    ```bash
    pip install -r requirements.txt
    ```
+
 
 5. Start the app:
 
@@ -36,6 +38,20 @@ Simple local login demo with a Flask backend and a minimal HTML/CSS UI. Submitte
 ## Data storage
 
 Login records are stored in `data/app.db` (SQLite). Delete the file if you want to reset the data.
+
+## Test suites
+
+
+## UI tests
+
+- `tests/test_login_playwright.py`: Playwright E2E login tests that submit credentials, confirm the success page, and verify the DB insert.
+- `tests/test_login_abcd_playwright.py`: Playwright E2E test that inserts the `ABCD/ABCD` login and asserts it is saved in SQLite.
+
+## DB tests
+- `tests/DB tests/test_sqlite_has_rows.py`: Unit tests that validate the `logins` table exists and has rows (including an `AA/AA` record).
+
+# API tests
+
 
 ## Notes
 

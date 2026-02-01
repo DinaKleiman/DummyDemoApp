@@ -16,14 +16,41 @@
       <form method="post" class="form">
         <label class="field">
           <span>Username</span>
-          <input type="text" name="username" placeholder="jane.doe" required />
+          <input
+            type="text"
+            name="username"
+            placeholder="jane.doe"
+            value="{{ username|default('') }}"
+            class="input{% if username_error %} input--error{% endif %}"
+            required
+          />
         </label>
+        {% if username_error %}
+          <span class="field-error" role="alert">{{ username_error }}</span>
+        {% endif %}
         <label class="field">
           <span>Password</span>
-          <input type="password" name="password" placeholder="••••••" required />
+          <div class="password-field">
+  <input type="password" name="password" placeholder="••••••" class="input" required />
+  <button class="toggle-password" type="button" aria-label="Show password" data-show="false">
+    <span aria-hidden="true">👁</span>
+  </button>
+</div>
         </label>
         <button type="submit">Save Login</button>
       </form>
     </main>
+  <script>
+    const toggle = document.querySelector(".toggle-password");
+    const passwordInput = document.querySelector("input[name=\"password\"]");
+    if (toggle && passwordInput) {
+      toggle.addEventListener("click", () => {
+        const isShown = toggle.getAttribute("data-show") === "true";
+        passwordInput.type = isShown ? "password" : "text";
+        toggle.setAttribute("data-show", isShown ? "false" : "true");
+        toggle.setAttribute("aria-label", isShown ? "Show password" : "Hide password");
+      });
+    }
+  </script>
   </body>
 </html>

@@ -5,6 +5,8 @@ from pathlib import Path
 
 from flask import Flask, redirect, render_template, request, url_for
 
+INVALID_USERNAME_CHARS = set("!@#$%^&*()")
+
 def init_db() -> None:
     DB_PATH.parent.mkdir(parents=True, exist_ok=True)
     with sqlite3.connect(DB_PATH) as connection:
@@ -33,6 +35,12 @@ def login() -> str:
     if request.method == "POST":
         username = request.form.get("username", "").strip()
         password = request.form.get("password", "").strip()
+        if any(char in INVALID_USERNAME_CHARS for char in username):
+            return render_template(
+                "login.html",
+                username_error="!@#$%^&*() symbols are not allowed",
+                username=username,
+            )
         if username and password:
             with sqlite3.connect(DB_PATH) as connection:
                 connection.execute(
@@ -44,6 +52,7 @@ def login() -> str:
         return render_template(
             "login.html",
             error="Please enter both a username and password.",
+            username=username,
         )
 
     return render_template("login.html")

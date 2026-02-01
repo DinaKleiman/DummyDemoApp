@@ -4,7 +4,6 @@ Simple local login demo with a Flask backend and a minimal HTML/CSS UI. Submitte
 
 ## Requirements
 
-
 - Python 3.10+ (works with 3.8+)
 - VS Code with the Python extension
 

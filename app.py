@@ -3,7 +3,7 @@ from __future__ import annotations
 import sqlite3
 from pathlib import Path
 
-from flask import Flask, redirect, render_template, request, url_for
+from flask import Flask, jsonify, redirect, render_template, request, url_for
 
 INVALID_USERNAME_CHARS = set("!@#$%^&*()")
 
@@ -56,6 +56,18 @@ def login() -> str:
         )
 
     return render_template("login.html")
+
+
+@app.route("/api/login/<username>")
+def get_login(username: str):
+    with sqlite3.connect(DB_PATH) as connection:
+        row = connection.execute(
+            "SELECT id, username, password FROM logins WHERE username = ? ORDER BY id DESC LIMIT 1",
+            (username,),
+        ).fetchone()
+    if row is None:
+        return jsonify({"error": "User not found"}), 404
+    return jsonify({"user_id": row[0], "username": row[1], "password": row[2]})
 
 
 @app.route("/success")

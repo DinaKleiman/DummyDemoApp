@@ -38,6 +38,33 @@ Note:   You usually only need to do this once per virtual environment, or whenev
 
 Login records are stored in `data/app.db` (SQLite). Delete the file if you want to reset the data.
 
+## Seed script (sample data)
+
+This project includes a seed script that inserts test users into the SQLite DB.
+
+- Script: `seed_db.py`
+- What it does: inserts 9 rows into the `logins` table
+- Each run generates **new random usernames/passwords**
+- Includes special cases:
+  - 1 username with a forbidden character (`!@#$%^&*()`)
+  - 1 password with a forbidden character
+  - 2 duplicate rows (same username + password)
+  - 1 empty username
+  - 1 empty password
+
+Run it:
+
+```bash
+python3 seed_db.py
+```
+
+Note: Running the script multiple times will add more rows each time.
+
+## Migrations
+
+Schema changes should go into the `migrations/` folder as SQL files (for example: `001_create_tables.sql`).
+This keeps the database structure in version control without committing the DB file itself.
+
 ## Test suites
 
 

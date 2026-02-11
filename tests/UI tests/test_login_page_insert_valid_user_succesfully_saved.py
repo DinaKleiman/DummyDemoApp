@@ -14,15 +14,20 @@ DB_PATH = Path(__file__).resolve().parents[2] / "data" / "app.db"
 
 
 def test_login_inserts_user(page: Page) -> None:
+    # Arrange
     username = "XX"
     password = "YY"
 
+    # Act
     page.goto(f"{BASE_URL}/")
     page.fill('input[name="username"]', username)
     page.fill('input[name="password"]', password)
     page.wait_for_timeout(5000)
     page.click('button[type="submit"]')
+    page.wait_for_timeout(5000)
 
+    # Assert
+    expect(page).to_have_url(re.compile(r"/success"))
     expect(page.locator("h1")).to_have_text("Saved!")
     expect(page.locator("strong")).to_have_text(username)
 

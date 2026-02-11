@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 import sqlite3
 import random
 from pathlib import Path
@@ -7,7 +8,9 @@ from pathlib import Path
 from app import app
 
 
-DB_PATH = Path(__file__).resolve().parents[2] / "data" / "app.db"
+DB_PATH = Path(
+    os.getenv("DB_PATH", str(Path(__file__).resolve().parents[2] / "data" / "app.db"))
+)
 
 
 def test_get_login_by_username() -> None:

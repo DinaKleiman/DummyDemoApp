@@ -26,13 +26,19 @@ Note:   You usually only need to do this once per virtual environment, or whenev
    ```
 
 
-5. Start the app:
+5. If this is your first run (no `data/app.db` yet), seed the database:
+
+   ```bash
+   python3 seed_db.py
+   ```
+
+6. Start the app:
 
    ```bash
    python app.py
    ```
 
-6. Open your browser to `http://localhost:5000`.
+7. Open your browser to `http://localhost:5000`.
 
 ## Data storage
 
@@ -40,7 +46,7 @@ Login records are stored in `data/app.db` (SQLite). Delete the file if you want 
 
 ## Seed script (sample data)
 
-This project includes a seed script that inserts test users into the SQLite DB.
+This project includes a seed script that inserts test users into the SQLite DB. Run it before the first app start if `data/app.db` does not exist.
 
 - Script: `seed_db.py`
 - What it does: inserts 9 rows into the `logins` table

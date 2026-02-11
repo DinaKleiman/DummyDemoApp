@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 import sqlite3
 from pathlib import Path
 
@@ -24,7 +25,7 @@ def init_db() -> None:
 
 
 BASE_DIR = Path(__file__).resolve().parent
-DB_PATH = BASE_DIR / "data" / "app.db"
+DB_PATH = Path(os.getenv("DB_PATH", str(BASE_DIR / "data" / "app.db")))
 
 app = Flask(__name__)
 init_db()

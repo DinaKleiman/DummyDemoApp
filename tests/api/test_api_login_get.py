@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import sqlite3
-import random
 from pathlib import Path
 
 from app import app
@@ -12,13 +11,19 @@ DB_PATH = Path(__file__).resolve().parents[2] / "data" / "app.db"
 
 def test_get_login_by_username() -> None:
     with sqlite3.connect(DB_PATH) as connection:
-        rows = connection.execute(
-            "SELECT id, username, password FROM logins"
-        ).fetchall()
+        row = connection.execute(
+            """
+            SELECT id, username, password
+            FROM logins
+            WHERE username <> ''
+            ORDER BY id DESC
+            LIMIT 1
+            """
+        ).fetchone()
 
-    assert rows, "No users found in DB to test against."
+    assert row is not None, "No users with non-empty username found in DB to test against."
 
-    user_id, username, password = random.choice(rows)
+    user_id, username, password = row
     print(f"[api] using existing user: {username}")
     print(f"[api] user_id: {user_id}")
     print(f"[api] password for {username}: {password}")
